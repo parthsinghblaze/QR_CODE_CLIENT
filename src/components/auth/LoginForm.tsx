@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import React from 'react';
 import {useDispatch} from "react-redux";
 import {useRouter} from "next/navigation";
@@ -7,11 +6,10 @@ import * as Yup from "yup";
 import {useFormik} from "formik";
 import axiosInstance from "../../utils/axiosInstance";
 import {signSuccess} from "../../redux/auth/authSlice";
+import Link from 'next/link'
 
-
-
-function LoginForm(props) {
-    const dispatch = useDispatch()
+function LoginForm() {
+    const dispatch = useDispatch();
     const router = useRouter();
 
     const validationSchema = Yup.object({
@@ -53,7 +51,8 @@ function LoginForm(props) {
     });
 
     return (
-            <form className="w-full max-w-sm bg-white p-6 rounded shadow" onSubmit={formik.handleSubmit}>
+            <div className={"w-full max-w-sm bg-white p-6 rounded shadow"}>
+            <form className="" onSubmit={formik.handleSubmit}>
                 <h2 className="text-xl font-bold mb-4">Login</h2>
 
                 <div className="mb-4">
@@ -99,6 +98,10 @@ function LoginForm(props) {
                     Login
                 </button>
             </form>
+                <div className={'py-3'}>
+                    <Link href="/sign-up">Don't have account?</Link>
+                </div>
+            </div>
     );
 }
 

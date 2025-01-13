@@ -2,9 +2,13 @@
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axiosInstance from "../../../utils/axiosInstance";
+import {signSuccess} from "../../../redux/auth/authSlice";
+import {useRouter} from "next/navigation";
 
 
 export default function SignUp() {
+    const router = useRouter();
 
     const formik = useFormik({
         initialValues: {
@@ -17,8 +21,26 @@ export default function SignUp() {
             email: Yup.string().email('Invalid email address').required('Email is required'),
             password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
         }),
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+        onSubmit: async (values) => {
+            try {
+
+                const data = {
+                    name: values.fullName,
+                    email: values.email,
+                    password: values.password
+                }
+
+                const response = await axiosInstance.post('auth/create', data);
+                console.log("RESPONSE", response?.data);
+
+                // Check if the response contains the token
+                if (response?.data) {
+                    // Store the token in localStorage
+                    router.replace('/sign-in');
+                }
+            } catch (error) {
+                console.error('Error during login:', error);
+            }
         },
     });
 
